@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mrinalini | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&family=Questrial&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000;
+      --text: #f2f2f2;
+      --muted: #8a8a8a;
+      --line: #2a2a2a;
+      --accent: #00b7ff;
+      --font-head: "Oswald", "Arial Narrow", sans-serif;
+      --font-sub: "Questrial", "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Manrope', 'Segoe UI', Arial, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      font-family: var(--font-sub);
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+
+    /* vertical grid lines */
+    .grid-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: repeating-linear-gradient(
+        to right,
+        var(--line) 0, var(--line) 1px,
+        transparent 1px, calc(100% / 8)
+      );
+      background-size: calc(100% + 1px) 100%;
+      border-right: 1px solid var(--line);
+    }
+
+    /* nav */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 32px 0 24px; border-bottom: 1px solid var(--line);
+      position: relative; z-index: 2;
+    }
+    nav .logo { font-size: 1.2rem; font-weight: 400; }
+    nav ul { list-style: none; display: flex; gap: 40px; }
+    nav ul a { color: var(--muted); transition: color .25s; }
+    nav ul a:hover { color: var(--text); }
+    nav ul a.resume { color: var(--accent); }
+
+    /* hero */
+    .hero { position: relative; min-height: 92vh; }
+    .hero-top {
+      display: flex; justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace; font-size: .8rem;
+      color: var(--muted); padding-top: 10px; position: relative; z-index: 2;
+    }
+    .status::before {
+      content: ''; display: inline-block; width: 7px; height: 7px;
+      background: var(--accent); border-radius: 50%; margin-right: 8px;
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 50% { opacity: .35; } }
+	.lives { display: flex; gap: 8px; }
+	.lives svg {
+  		width: 20px; height: 20px;
+  		fill: var(--accent);
+  		filter: drop-shadow(0 0 6px var(--accent));
+  		animation: beat 1.6s infinite;
+  		cursor: pointer;
+  		transition: opacity .3s, transform .3s;
+	}
+    .lives svg:nth-child(2) { animation-delay: .2s; }
+    .lives svg:nth-child(3) { animation-delay: .4s; }
+    .lives svg.lost { fill: none; stroke: var(--muted); stroke-width: 1.5; filter: none; animation: none; opacity: .5; }
+    @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+
+    .cursor { display: inline-block; width: 1px; background: var(--muted); margin-left: 2px; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 8vw, 6.4rem);
+      font-weight: 300; letter-spacing: -0.04em; line-height: 1.08;
+      margin-top: 22vh; max-width: 900px; position: relative; z-index: 2;
+    }
+    .hero h1 span { color: var(--muted); }
+
+    /* crosshair */
+    .crosshair {
+      position: fixed; width: 44px; height: 44px; pointer-events: none; z-index: 50;
+      transform: translate(-50%, -50%); right: 7%; bottom: 8%;
+    }
+    .crosshair::before, .crosshair::after { content: ''; position: absolute; background: var(--muted); }
+    .crosshair::before { left: -30px; right: -30px; top: 50%; height: 1px; }
+    .crosshair::after { top: -30px; bottom: -30px; left: 50%; width: 1px; }
+    .crosshair i { position: absolute; inset: 8px; border: 1px solid var(--muted); border-radius: 50%; }
+
+    /* sections */
+    section { padding: 110px 0; border-top: 1px solid var(--line); position: relative; }
+    .label { font-family: 'JetBrains Mono', monospace; font-size: .8rem; color: var(--accent); margin-bottom: 40px; display: block; }
+    h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 300; letter-spacing: -0.03em; margin-bottom: 30px; }
+    p.lead { color: var(--muted); max-width: 640px; font-size: 1.1rem; }
+
+    .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; position: relative; z-index: 2; }
+    .project {
+      border: 1px solid var(--line); padding: 30px; background: rgba(0,0,0,.6);
+      transition: border-color .3s, transform .3s;
+    }
+    .project:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .project .num { font-family: 'JetBrains Mono', monospace; color: var(--muted); font-size: .8rem; }
+    .project h3 { font-weight: 400; font-size: 1.4rem; margin: 14px 0 10px; }
+    .project p { color: var(--muted); font-size: .95rem; }
+    .tags { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .tags span { font-family: 'JetBrains Mono', monospace; font-size: .72rem; border: 1px solid var(--line); padding: 3px 10px; color: var(--muted); }
+
+    .skills { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; position: relative; z-index: 2; }
+    .skills span { border: 1px solid var(--line); padding: 8px 18px; border-radius: 30px; font-size: .9rem; transition: all .25s; }
+    .skills span:hover { border-color: var(--accent); color: var(--accent); }
+
+    .contact-link { font-size: clamp(1.6rem, 5vw, 3.4rem); letter-spacing: -0.03em; border-bottom: 1px solid var(--line); display: inline-block; padding-bottom: 6px; transition: color .25s, border-color .25s; position: relative; z-index: 2; }
+    .contact-link:hover { color: var(--accent); border-color: var(--accent); }
+    .socials { margin-top: 40px; display: flex; gap: 30px; color: var(--muted); position: relative; z-index: 2; }
+    .socials a:hover { color: var(--text); }
+
+    footer { border-top: 1px solid var(--line); padding: 30px 0; text-align: center; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: .75rem; }
+
+    /* reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal.show { opacity: 1; transform: none; }
+
+    @media (max-width: 700px) {
+      nav ul { gap: 18px; font-size: .85rem; }
+      .hero-top { flex-direction: column; gap: 6px; }
+      .crosshair { display: none; }
+    }
+
+	/* headlines -> Oswald */
+	h1, h2, h3, nav .logo, .contact-link {
+  	font-family: var(--font-head);
+  	font-weight: 400;
+  	letter-spacing: 0.01em;
+  	line-height: 1.1;
+	}
+	/* one-liners under headlines -> Questrial */
+	p.lead, .project p, .hero-sub {
+  	font-family: var(--font-sub);
+	}
+
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <div class="grid-bg"></div>
+
+    <nav>
+      <a href="#" class="logo">Mrinalini^^ </a>
+      <ul>
+        <li><a href="#projects">projects</a></li>
+        <li><a href="#about">about</a></li>
+        <li><a href="#contact">contact</a></li>
+        <li><a href="https://drive.google.com/file/d/1mHP3iR_9WLwxHW6mrAzwd0ifP8aHSfgG/view?usp=sharing" class="resume">resume</a></li>
+      </ul>
+    </nav>
+
+    <div class="hero">
+      <div class="hero-top">
+        <div><span id="typed"></span><span class="cursor">&nbsp;</span></div>
+        <div class="lives" title="3 lives left">
+  <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.1C.9 8.6 2.7 5 6.2 5c2 0 3.6 1.1 4.5 2.7h2.6C14.2 6.1 15.8 5 17.8 5c3.5 0 5.3 3.6 3.8 6.9C19.5 16.4 12 21 12 21z"/></svg>
+  <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.1C.9 8.6 2.7 5 6.2 5c2 0 3.6 1.1 4.5 2.7h2.6C14.2 6.1 15.8 5 17.8 5c3.5 0 5.3 3.6 3.8 6.9C19.5 16.4 12 21 12 21z"/></svg>
+  <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.1C.9 8.6 2.7 5 6.2 5c2 0 3.6 1.1 4.5 2.7h2.6C14.2 6.1 15.8 5 17.8 5c3.5 0 5.3 3.6 3.8 6.9C19.5 16.4 12 21 12 21z"/></svg>
+      </div>
+      </div>
+      <h1>I build and<span> refine </span>things for the <span>real world.</span></h1>
+    </div>
+  </div>
+
+  <div class="crosshair" id="crosshair"><i></i></div>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="grid-bg"></div>
+      <span class="label">01 / projects</span>
+      <div class="projects">
+        <div class="project reveal">
+          <span class="num">001</span>
+          <h3>Portfolio on AWS S3</h3>
+          <p>A static website hosted on Amazon S3. My first step into cloud deployment.</p>
+          <div class="tags"><span>AWS S3</span><span>HTML</span><span>CSS</span></div>
+        </div>
+        <div class="project reveal">
+          <span class="num">002</span>
+          <h3>Poor Combustion Sensing Node</h3>
+          <p>An ESP32-based embedded system that senses toxic gas levels and reports readings.</p>
+          <div class="tags"><span>ESP32</span><span>Multi Sensor</span><span>C++</span></div>
+        </div>
+        <div class="project reveal">
+          <span class="num">003</span>
+          <h3>Upcoming</h3>
+          <p>O2Treck - <span>an efficient and affordable trekking assistant.</span></p>
+          <div class="tags"><span>Embedded</span><span>MYOSA</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="grid-bg"></div>
+      <span class="label">02 / about</span>
+      <h2 class="reveal">A first-year engineer, exploring around.</h2>
+      <p class="lead reveal">I'm an B.Tech student who enjoys building things that work, from cloud deployments to embedded devices. I'm learning something new every week and excited to take you along the way.</p>
+      <div class="skills reveal">
+        <span>AWS</span><span>ML</span><span>Git &amp; GitHub</span><span>ESP32</span><span>API Testing</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="grid-bg"></div>
+      <span class="label">03 / contact</span>
+      <a class="contact-link reveal" href="mailto:mrinalinidhanaraj@gmail.com">mrinalinidhanaraj@gmail.com</a>
+      <div class="socials reveal">
+        <a href="https://github.com/Mrinalini-Dhanaraj" target="_blank" rel="noopener">github</a>
+        <a href="https://linkedin.com/in/mrinalinidhanaraj" target="_blank" rel="noopener">linkedin</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>&copy; 2026 Mrina1ini &mdash; hosted on Amazon S3</footer>
+
+  <script>
+    // ---- typing greeting (edit NAME and the greetings) ----
+    const NAME = "Mrinalini";
+    const greetings = [
+      "Hello, I'm " + NAME,
+      "வணக்கம், நான் " + NAME,
+      "Bonjour, je suis " + NAME
+    ];
+    const el = document.getElementById("typed");
+    let g = 0, c = 0, deleting = false;
+
+    function type() {
+      const text = greetings[g];
+      el.textContent = text.slice(0, c);
+      if (!deleting && c < text.length) { c++; setTimeout(type, 90); }
+      else if (!deleting) { deleting = true; setTimeout(type, 1800); }
+      else if (c > 0) { c--; setTimeout(type, 45); }
+      else { deleting = false; g = (g + 1) % greetings.length; setTimeout(type, 400); }
+    }
+    type();
+
+    // ---- crosshair follows the mouse smoothly ----
+    const ch = document.getElementById("crosshair");
+    let tx = 0, ty = 0, x = 0, y = 0, moved = false;
+    window.addEventListener("mousemove", e => {
+      tx = e.clientX; ty = e.clientY;
+      if (!moved) { moved = true; ch.style.right = "auto"; ch.style.bottom = "auto"; x = tx; y = ty; }
+    });
+    (function loop() {
+      if (moved) {
+        x += (tx - x) * 0.12; y += (ty - y) * 0.12;
+        ch.style.left = x + "px"; ch.style.top = y + "px";
+      }
+      requestAnimationFrame(loop);
+    })();
+
+    // ---- reveal on scroll ----
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("show"); io.unobserve(en.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll(".reveal").forEach(n => io.observe(n));
+
+	document.querySelectorAll(".lives svg").forEach(h =>
+  	h.addEventListener("click", () => h.classList.toggle("lost"))
+	);
+  </script>
+</body>
+</html>
